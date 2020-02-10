@@ -24,6 +24,14 @@ class ExampleList2(APIView):
         serializer = Example2Serializers(queryset, many=True)
         return Response(serializer.data)
 
+    def post(self,request, format=None):
+        serializer = Example2Serializers(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            datas = serializer.data
+            return Response(datas)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
 class CustonAuthToken(ObtainAuthToken):
     
     def post(self, request, * args, **kwars):
